@@ -1,7 +1,7 @@
 ## Парсер фотографий с сайта Pexels.com
 #### :heavy_exclamation_mark: Для работы с территории РФ нужны прокси :heavy_exclamation_mark: 
 ### Для корректной работы необходимо создать файл .env в корне проекта и добавить следующие переменные окружения:
-API_KEY=получаем_на_сайте_Pexels.com</br>
+API_KEY=получаем_на_сайте_Pexels.com (по ссылке https://www.pexels.com/api/)</br>
 PROXY_LOGIN=логин_от_проксей</br>
 PROXY_PASS=пароль_от_проксей</br>
 PROXY_IP=IP_от_проксей</br>
