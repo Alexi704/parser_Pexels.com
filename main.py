@@ -7,7 +7,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 headers = {'Authorization': f'{os.getenv("API_KEY")}'}
-proxies = {'https': f'http://{os.getenv("PROXY_LOGIN")}:{os.getenv("PROXY_PASS")}@{os.getenv("PROXY_IP")}:{os.getenv("PROXY_PORT")}'}
+proxies = {
+    'https': f'http://{os.getenv("PROXY_LOGIN")}:{os.getenv("PROXY_PASS")}'
+             f'@{os.getenv("PROXY_IP")}:{os.getenv("PROXY_PORT")}'
+}
 
 
 def scrap_pexels(query=''):
@@ -45,8 +48,6 @@ def scrap_pexels(query=''):
 
 
 def download_images(img_list=[], img_dir_path=''):
-    # headers = {'Authorization': f'{os.getenv("API_KEY")}'}
-    # proxies = {'https': f'http://{os.getenv("PROXY_LOGIN")}:{os.getenv("PROXY_PASS")}@45.91.209.156:12659'}
     for item_url in tqdm(img_list):
         response = requests.get(url=item_url, headers=headers, proxies=proxies)
         img = response.content
