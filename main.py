@@ -6,28 +6,26 @@ import math
 from dotenv import load_dotenv
 
 load_dotenv()
+headers = {'Authorization': f'{os.getenv("API_KEY")}'}
+proxies = {'https': f'http://{os.getenv("PROXY_LOGIN")}:{os.getenv("PROXY_PASS")}@{os.getenv("PROXY_IP")}:{os.getenv("PROXY_PORT")}'}
 
 
 def scrap_pexels(query=''):
-    headers = {'Authorization': f'{os.getenv("API_KEY")}'}
     query_str = f'https://api.pexels.com/v1/search?query={query}&per_page=80'
-    proxies = {'https': f'http://{os.getenv("PROXY_LOGIN")}:{os.getenv("PROXY_PASS")}@45.91.209.156:12659'}
-
     response = requests.get(url=query_str, headers=headers, proxies=proxies)
 
     if response.status_code != 200:
         return print(f'Ошибка. Статус код - {response.status_code}, {response.json()}')
 
     img_dir_path = 'out/' + '_'.join(i for i in query.split(' ') if i.isalnum())
-    if not os.path.exists(img_dir_path):
-        os.makedirs(img_dir_path)
-
     json_data = response.json()
+    images_count = json_data.get('total_results')
+
+    if not os.path.exists(img_dir_path) and images_count > 0:
+        os.makedirs(img_dir_path)
 
     # with open(f'out/result_{query}.json', 'w', encoding='utf-8') as file:
     #     json.dump(json_data, file, indent=4, ensure_ascii=False)
-
-    images_count = json_data.get('total_results')
 
     if not json_data.get('next_page'):
         print(f'[INFO] Всего изображений: {images_count}.')
@@ -47,8 +45,8 @@ def scrap_pexels(query=''):
 
 
 def download_images(img_list=[], img_dir_path=''):
-    headers = {'Authorization': f'{os.getenv("API_KEY")}'}
-    proxies = {'https': f'http://{os.getenv("PROXY_LOGIN")}:{os.getenv("PROXY_PASS")}@45.91.209.156:12659'}
+    # headers = {'Authorization': f'{os.getenv("API_KEY")}'}
+    # proxies = {'https': f'http://{os.getenv("PROXY_LOGIN")}:{os.getenv("PROXY_PASS")}@45.91.209.156:12659'}
     for item_url in tqdm(img_list):
         response = requests.get(url=item_url, headers=headers, proxies=proxies)
         img = response.content
